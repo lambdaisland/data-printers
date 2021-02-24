@@ -5,7 +5,8 @@
 (lioss/main
  {:license        :mpl
   :inception-year 2021
-  :description    "Quickly define print handlers for tagged literals across print/pprint implementations."})
+  :description    "Quickly define print handlers for tagged literals across print/pprint implementations."
+  :aliases-as-optional-deps [:dev]})
 
 
 ;; Local Variables:

@@ -1,15 +1,16 @@
 # Unreleased
 
-## Added
-
-## Fixed
-
 ## Changed
+
+- Include optional dependencies in the pom, marked as optional
 
 # 0.0.8 (2021-02-24 / 0aa1553)
 
 ## Added
 
-## Fixed
-
-## Changed
+- `lambdaisland.data-printers/register-print`
+- `lambdaisland.data-printers/register-pprint`
+- `lambdaisland.data-printers.puget/register-puget`
+- `lambdaisland.data-printers.deep-diff/register-deep-diff`
+- `lambdaisland.data-printers.deep-diff2/register-deep-diff2`
+- `lambdaisland.data-printers.transit/register-write-handler`
