@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lambdaisland</groupId>
   <artifactId>data-printers</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
   <name>data-printers</name>
   <description>Quickly define print handlers for tagged literals across print/pprint implementations.</description>
   <url>https://github.com/lambdaisland/data-printers</url>
@@ -22,7 +22,7 @@
     <url>https://github.com/lambdaisland/data-printers</url>
     <connection>scm:git:git://github.com/lambdaisland/data-printers.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/lambdaisland/data-printers.git</developerConnection>
-    <tag>ee33d878f4bfe11b8c06b6a36d470d8a4b0e01e7</tag>
+    <tag>2faa55e10272302b2601126aa284ad4247fb9132</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -81,7 +81,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>ee33d878f4bfe11b8c06b6a36d470d8a4b0e01e7</git-revision>
+              <git-revision>2faa55e10272302b2601126aa284ad4247fb9132</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
