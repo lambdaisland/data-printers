@@ -1,0 +1,5 @@
+#kaocha/v1
+{:plugins [:notifier :print-invocations :profiling]
+ :tests [{:id :clj}
+         {:id :cljs
+          :type :kaocha.type/cljs}]}

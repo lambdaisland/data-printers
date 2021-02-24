@@ -1,0 +1,15 @@
+.cpcache
+.nrepl-port
+target
+repl
+scratch.clj
+.shadow-cljs
+target
+yarn.lock
+node_modules/
+.DS_Store
+resources/public/ui
+.store
+.cljs_node_repl
+package-lock.json
+out
