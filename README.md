@@ -128,7 +128,15 @@ This takes the type (`java.lang.Class` or JavaScript constructor function), a
 tag as a symbol, and a function returning a plain EDN representation of
 instances of the type.
 
-Available functions:
+There are also libraries that implement their own printers, for instance Puget
+is a colorizing pretty printer.
+
+Transit is a separate data format, an alternative to EDN. It has a data model
+very similar to EDN, but is more compact and faster to parse. It also has the
+ability to mark values with tags, so you can reuse your print/read handlers with
+Transit.
+
+Currently we have these functions for registering handlers:
 
 ``` clojure
 lambdaisland.data-printers/register-print
