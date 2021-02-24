@@ -3,22 +3,40 @@
                       [lambdaisland.deep-diff.printer :as ddiff-printer]])
             [clojure.pprint :as pprint]
             [clojure.test :refer [deftest testing is]]
+            [cognitect.transit :as transit]
             [lambdaisland.data-printers :as dp]
             [lambdaisland.data-printers.deep-diff :as dp-ddiff]
             [lambdaisland.data-printers.deep-diff2 :as dp-ddiff2]
+            [lambdaisland.data-printers.transit :as dp-transit]
             [lambdaisland.data-printers.puget :as dp-puget]
-            [lambdaisland.deep-diff2.printer-impl :as ddiff2-printer-impl]))
+            [lambdaisland.deep-diff2.printer-impl :as ddiff2-printer-impl])
+  #?(:clj (:import (java.io ByteArrayInputStream ByteArrayOutputStream))))
 
-(deftype MyType [x])
+(deftype MyType [x]
+  ;; Value semantics
+  #?@(:clj
+      [Object
+       (equals [this that]
+               (and (instance? MyType that)
+                    (= (.-x this) (.-x that))))]
+      :cljs
+      [cljs.core/IEquiv
+       (-equiv [this that]
+               (and (instance? MyType that)
+                    (= (.-x this) (.-x that))))]))
 
 (defn to-edn [obj]
   {:x (.-x obj)})
+
+(defn read-my-type [m]
+  `(->MyType (:x ~m)))
 
 (dp/register-print MyType 'my/type to-edn)
 (dp/register-pprint MyType 'my/type to-edn)
 (dp-puget/register-puget MyType 'my/type to-edn)
 (dp-ddiff/register-deep-diff MyType 'my/type to-edn)
 (dp-ddiff2/register-deep-diff2 MyType 'my/type to-edn)
+(dp-transit/register-write-handler MyType 'my/type to-edn)
 
 (def obj (->MyType 1))
 
@@ -58,3 +76,20 @@
              (-> obj
                  (ddiff2-printer-impl/format-doc printer)
                  (ddiff2-printer-impl/print-doc printer)))))))
+
+(deftest transit-test
+  (let [encoded "[\"~#my/type\",[\"^ \",\"~:x\",1]]"]
+    (is (= encoded
+           #?(:clj
+              (let [baos (ByteArrayOutputStream.)
+                    writer (transit/writer baos :json {:handlers @dp-transit/write-handlers})]
+                (transit/write writer obj)
+                (.toString baos "utf-8"))
+              :cljs
+              (transit/write (transit/writer :json {:handlers @dp-transit/write-handlers}) obj))))
+
+    (is (= obj
+           #?(:clj (let [bais (ByteArrayInputStream. (.getBytes encoded))
+                         reader (transit/reader bais :json {:handlers (dp-transit/data-reader-handlers)})]
+                     (transit/read reader))
+              :cljs (transit/read (transit/reader :json {:handlers (dp-transit/data-reader-handlers)}) encoded))))))

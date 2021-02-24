@@ -35,8 +35,8 @@ One stop shop registration of print handlers
 - print-method
 - print-dup
 - clojure.pprint
-- [Puget](https://github.com/greglook/puget) 
-- [deep-diff](https://github.com/lambdaisland/deep-diff)
+- [Puget](https://github.com/greglook/puget) (Clojure only)
+- [deep-diff](https://github.com/lambdaisland/deep-diff) (Clojure only)
 - [deep-diff2](https://github.com/lambdaisland/deep-diff2)
 
 <!-- installation -->
@@ -75,7 +75,7 @@ referred to as "reading".
 
 Types that are not native to Clojure however will throw a spanner in the works.
 They will print in a way that is noisy and opaque, and what is worse: this
-printed version is no longer valid EDN. It will file to be read back.
+printed version is no longer valid EDN. It will fail to be read back.
 
 ``` clojure
 (deftype CustomType [x])
@@ -122,15 +122,120 @@ instances of the type.
 
 Available functions:
 
-```
+``` clojure
 lambdaisland.data-printers/register-print
 lambdaisland.data-printers/register-pprint
 lambdaisland.data-printers.puget/register-puget
 lambdaisland.data-printers.deep-diff/register-deep-diff
 lambdaisland.data-printers.deep-diff2/register-deep-diff2
+lambdaisland.data-printers.transit/register-write-handler
 ```
 
 ## Usage
+
+You should create a wrapper in your own project where you call all the ones that
+apply to you, depending on your project's dependencies. Here's a full example:
+
+```
+(ns lambdaisland.data-printers.example
+  (:require [lambdaisland.data-printers :as dp]
+            [lambdaisland.data-printers.deep-diff :as dp-ddiff]
+            [lambdaisland.data-printers.deep-diff2 :as dp-ddiff2]
+            [lambdaisland.data-printers.transit :as dp-transit]
+            [lambdaisland.data-printers.puget :as dp-puget]))
+
+(defn register-printer [type tag to-edn]
+  (dp/register-print type tag to-edn)
+  (dp/register-pprint type tag to-edn)
+  (dp-puget/register-puget type tag to-edn)
+  (dp-ddiff/register-deep-diff type tag to-edn)
+  (dp-ddiff2/register-deep-diff2 type tag to-edn)
+  (dp-transit/register-write-handler type tag to-edn))
+```
+
+This can be a `.cljc` file, the platform-specific handlers are all still
+implemented as CLJC for your convenience, even though they may do nothing on a
+given platform.
+
+### Readers
+
+This library only provides registration of write/print handlers, since Clojure
+already comes with fairly convenient support for custom tagged literal readers,
+but some caveats you should be aware of.
+
+Reader functions are declared in a `data_readers.clj`, `data_readers.cljs`, or
+`data_readers.cljc` file. This should contain a map from tag (symbol) to
+function name.
+
+``` clojure
+{my.ns/my-type my.ns/type-reader-fn}
+```
+
+When booting Clojure will create the `my.ns` namespace object, and the
+`my.ns/type-reader-fn` var object, but it will not actually load the namespace.
+The var will initially be undefined/empty, so you have to make sure to
+`(:require [my.ns])` before Clojure encounters its first `#my.ns {}` tagged
+literal.
+
+Note that this may also confuse code that uses `requiring-resolve`. This will
+return the undeclared/empty var, without requiring the namespace!
+
+When only dealing with Clojure your reader function can just return the value it
+needs to return and you're done, but when dealing with ClojureScript or
+cross-platform code it gets a bit more tricky.
+
+ClojureScript reader functions are still declared in Clojure (which makes sense,
+the ClojureScript compiler is written in Clojure, and handles the reading,
+compiling, and generating JS). In this case the function should return a
+**form**. Think of it as a macro, but defined with `defn` instead of `defmacro`.
+
+``` clojure
+(defn my-reader [obj]
+  `(->MyType (:x ~obj)))
+```
+
+If the same form is valid Clojure and ClojureScript then you are good to go, if
+not then this helper can come in handy:
+
+``` clojure
+(defmacro platform-case [& {:keys [cljs clj]}]
+  `(if (:ns ~'&env) ~cljs ~clj))
+```
+
+Used as such:
+
+``` clojure
+(defn my-reader [obj]
+  (platform-case :clj `(->MyType (:x ~obj))
+                 :cljs `(->MyCljsType (:x ~obj))))
+```
+
+### Transit
+
+Transit is the odd one out here, since it's not EDN, and because it requires
+some extra care and handling.
+
+Transit does not come with a registry of handlers that you can easily add to,
+instead you need to pass the handlers when creating a writer.
+
+``` clojure
+(require '[cognitect.transit :as transit])
+
+(def writer (transit/writer :json {:handlers @dp-transit/write-handlers}))
+```
+
+Since in the case of Transit you will probably also want to read back your
+serialized data, we include a macro to turn your `data_readers.clj(|s|c)` into
+transit readers.
+
+``` clojure
+(def reader (transit/writer :json {:handlers (dp-transit/data-reader-handlers)}))
+```
+
+The way this works is it will call your read handler functions, passing in a
+symbol. It expects to get a valid form back which gets turned into a transit
+read handler, so make sure your data readers are defined as described above, as
+macros in disguise.
 
 <!-- contributing -->
 ## Contributing

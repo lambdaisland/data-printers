@@ -1,5 +1,6 @@
 #kaocha/v1
-{:plugins [:notifier :print-invocations :profiling]
+{:plugins [:preloads]
+ :kaocha.plugin.preloads/ns-names [lambdaisland.my-data-reader]
  :tests [{:id :clj}
          {:id :cljs
           :type :kaocha.type/cljs}]}
