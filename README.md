@@ -136,7 +136,7 @@ lambdaisland.data-printers.transit/register-write-handler
 You should create a wrapper in your own project where you call all the ones that
 apply to you, depending on your project's dependencies. Here's a full example:
 
-```
+``` clojure
 (ns lambdaisland.data-printers.example
   (:require [lambdaisland.data-printers :as dp]
             [lambdaisland.data-printers.deep-diff :as dp-ddiff]
@@ -225,8 +225,8 @@ instead you need to pass the handlers when creating a writer.
 ```
 
 Since in the case of Transit you will probably also want to read back your
-serialized data, we include a macro to turn your `data_readers.clj(|s|c)` into
-transit readers.
+serialized data, we include a macro to turn your `data_readers.cljc` into
+transit readers. (currently only `.cljc` is supported)
 
 ``` clojure
 (def reader (transit/writer :json {:handlers (dp-transit/data-reader-handlers)}))
