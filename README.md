@@ -35,7 +35,8 @@ One stop shop registration of print handlers
 - print-method
 - print-dup
 - clojure.pprint
-- [Puget](https://github.com/greglook/puget)
+- [Puget](https://github.com/greglook/puget) 
+- [deep-diff2](https://github.com/lambdaisland/deep-diff2)
 
 <!-- installation -->
 ## Installation
@@ -124,6 +125,7 @@ Available functions:
 lambdaisland.data-printers/register-print
 lambdaisland.data-printers/register-pprint
 lambdaisland.data-printers.puget/register-puget
+lambdaisland.data-printers.deep-diff2/register-deep-diff2
 ```
 
 ## Usage

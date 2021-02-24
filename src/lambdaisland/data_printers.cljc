@@ -9,18 +9,20 @@
   "
   (:require [clojure.pprint :as pprint]))
 
+(defn type-name
+  "Given a class/type, return its name as a string. For ClojureScript this is a
+  best effort, and you may need to give it a hand by setting a `.-name` property
+  on your constructor function."
+  [t]
+  #?(:clj
+     (.getName ^Class t)
+     :cljs (let [n (.-name t)]
+             (if (empty? n)
+               (symbol (pr-str t))
+               (symbol n)))))
+
 #?(:cljs
    (do
-     (defn type-name
-       "Best effort to derive a 'type name' in ClojureScript given an object (not a constructor).
-  Inherintly flawed because the JavaScript object model does not have classes as
-  such. Same logic used in deep-diff2's cljs port of puget."
-       [t]
-       (let [n (.-name t)]
-         (if (empty? n)
-           (symbol (pr-str t))
-           (symbol n))))
-
      ;; Monkeypatch pprint so it's extensible by type
      (defmulti type-name-pprint-dispatch (comp type-name type))
 
