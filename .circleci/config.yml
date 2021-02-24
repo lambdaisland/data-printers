@@ -17,7 +17,9 @@ jobs:
       - clojure/with_cache:
           cache_version: << parameters.clojure_version >>
           steps:
+            - run: npm install ws
             - kaocha/execute:
+                aliases: :dev:test
                 args: "--reporter documentation --plugin cloverage --codecov"
                 clojure_version: << parameters.clojure_version >>
       - kaocha/upload_codecov
