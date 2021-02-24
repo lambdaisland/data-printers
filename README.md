@@ -55,6 +55,14 @@ project.clj
 ```
 <!-- /installation -->
 
+## Requirements
+
+We test with Clojure 1.10. Clojure 1.9 should still work, assuming you're not
+using deep-diff2, which requires Clojure 1.10.
+
+All dependencies are marked as `<optional>true</optional>`, so you need to bring
+the ones you plan to use yourself (Puget, deep-diff, transit-clj, transit-cljs).
+
 ## Rationale
 
 With Clojure/ClojureScript we get a serialization format for free, out of the
