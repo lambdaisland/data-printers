@@ -181,7 +181,8 @@ but some caveats you should be aware of.
 
 Reader functions are declared in a `data_readers.clj`, `data_readers.cljs`, or
 `data_readers.cljc` file. This should contain a map from tag (symbol) to
-function name.
+function name. It needs to be on the classpath, it's commonly placed under
+`resources`. Clojure will merge all the ones it finds on the classpath.
 
 ``` clojure
 {my.ns/my-type my.ns/type-reader-fn}
