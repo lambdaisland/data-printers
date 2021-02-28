@@ -63,12 +63,11 @@
        (use-method print-dup type print-handler))
 
      :cljs
-     (let [classname (symbol (type-name type))]
-       (extend-type type
-         IPrintWithWriter
-         (-pr-writer [obj w opts]
-           (-write w (str "#" tag " "))
-           (pr-seq-writer [(to-edn obj)] w opts))))))
+     (extend-type type
+       IPrintWithWriter
+       (-pr-writer [obj w opts]
+         (-write w (str "#" tag " "))
+         (pr-seq-writer [(to-edn obj)] w opts)))))
 
 (defn register-pprint
   "Register pretty-print writer based on a class/type."
