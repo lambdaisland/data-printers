@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lambdaisland</groupId>
   <artifactId>data-printers</artifactId>
-  <version>0.0.22</version>
+  <version>0.5.33</version>
   <name>data-printers</name>
   <description>Quickly define print handlers for tagged literals across print/pprint implementations.</description>
   <url>https://github.com/lambdaisland/data-printers</url>
@@ -22,13 +22,13 @@
     <url>https://github.com/lambdaisland/data-printers</url>
     <connection>scm:git:git://github.com/lambdaisland/data-printers.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/lambdaisland/data-printers.git</developerConnection>
-    <tag>a86af849845b4d94ac5dfc8e6be5e8e485ac1985</tag>
+    <tag>f4dc47bc87db905c74b6edfae87001cc011ac7d6</tag>
   </scm>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.10.2</version>
+      <version>1.10.3</version>
     </dependency>
     <dependency>
       <groupId>lambdaisland</groupId>
@@ -51,7 +51,7 @@
     <dependency>
       <groupId>com.cognitect</groupId>
       <artifactId>transit-cljs</artifactId>
-      <version>0.8.264</version>
+      <version>0.8.269</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -81,7 +81,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>a86af849845b4d94ac5dfc8e6be5e8e485ac1985</git-revision>
+              <git-revision>f4dc47bc87db905c74b6edfae87001cc011ac7d6</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
