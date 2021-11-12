@@ -38,6 +38,7 @@ One stop shop registration of print handlers
 - [Puget](https://github.com/greglook/puget) (Clojure only)
 - [deep-diff](https://github.com/lambdaisland/deep-diff) (Clojure only)
 - [deep-diff2](https://github.com/lambdaisland/deep-diff2)
+- Puget inlined by cider-nrepl
 
 <!-- installation -->
 ## Installation
@@ -145,6 +146,7 @@ lambdaisland.data-printers.puget/register-puget
 lambdaisland.data-printers.deep-diff/register-deep-diff
 lambdaisland.data-printers.deep-diff2/register-deep-diff2
 lambdaisland.data-printers.transit/register-write-handler
+lambdaisland.data-printers.cider-puget/register-cider-puget
 ```
 
 ## Usage
@@ -158,7 +160,8 @@ apply to you, depending on your project's dependencies. Here's a full example:
             [lambdaisland.data-printers.deep-diff :as dp-ddiff]
             [lambdaisland.data-printers.deep-diff2 :as dp-ddiff2]
             [lambdaisland.data-printers.transit :as dp-transit]
-            [lambdaisland.data-printers.puget :as dp-puget]))
+            [lambdaisland.data-printers.puget :as dp-puget]
+            [lambdaisland.data-printers.cider-puget :as dp-cider-puget]))
 
 (defn register-printer [type tag to-edn]
   (dp/register-print type tag to-edn)
@@ -166,7 +169,8 @@ apply to you, depending on your project's dependencies. Here's a full example:
   (dp-puget/register-puget type tag to-edn)
   (dp-ddiff/register-deep-diff type tag to-edn)
   (dp-ddiff2/register-deep-diff2 type tag to-edn)
-  (dp-transit/register-write-handler type tag to-edn))
+  (dp-transit/register-write-handler type tag to-edn)
+  (dp-cider-puget/register-cider-puget type tag to-edn))
 ```
 
 This can be a `.cljc` file, the platform-specific handlers are all still

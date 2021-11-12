@@ -2,9 +2,8 @@
 
 ## Added
 
-## Fixed
-
-## Changed
+- `lambdaisland.data-printers.cider-puget`, for dealing with CIDER's inlined
+  Puget. Bit of a hack, use with caution.
 
 # 0.5.33 (2021-11-12 / 69d27c6)
 
