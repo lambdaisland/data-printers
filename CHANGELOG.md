@@ -1,18 +1,14 @@
 # Unreleased
 
-## Added
-
-## Fixed
-
 ## Changed
+
+- Set `*print-readably*` for pprint
 
 # 0.0.22 (2021-02-28 / f763641)
 
-## Added
-
 ## Fixed
 
-## Changed
+- Remove unnecessary type-name call
 
 # 0.0.19 (2021-02-25 / 68f6e4e)
 
