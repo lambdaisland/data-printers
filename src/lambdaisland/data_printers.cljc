@@ -67,7 +67,7 @@
        IPrintWithWriter
        (-pr-writer [obj w opts]
          (-write w (str "#" tag " "))
-         (pr-seq-writer [(to-edn obj)] w opts)))))
+         (pr-seq-writer [(to-edn obj)] w (assoc opts :readably true))))))
 
 (defn register-pprint
   "Register pretty-print writer based on a class/type."
@@ -84,4 +84,5 @@
                  (symbol (type-name type))
                  (fn [obj]
                    (-write *out* (str "#" tag " "))
-                   (pprint/write-out (to-edn obj))))))
+                   (binding [*print-readably* true]
+                     (pprint/write-out (to-edn obj)))))))
