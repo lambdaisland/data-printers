@@ -15,4 +15,4 @@
   :test
   {:extra-paths ["test" "test_resources"]
    :extra-deps  {lambdaisland/kaocha      {:mvn/version "1.0.732"}
-                 lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}}}}}
+                 com.lambdaisland/kaocha-cljs {:mvn/version "1.0.93"}}}}}
