@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
 ## Fixed
 
-## Changed
+- cljs compat in cider-puget namespace
 
 # 0.7.40 (2021-11-15 / a73fc95)
 

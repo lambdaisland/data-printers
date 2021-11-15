@@ -9,8 +9,8 @@
   classpath, in that case registering a handler will simply be a no-op."
   (:require [clojure.string :as str]
             #?(:clj [clojure.java.classpath :as cp]))
-  (:import (java.util.jar JarFile JarEntry)
-           (java.io File)))
+  #?(:cljs (:import (java.util.jar JarFile JarEntry)
+                    (java.io File))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Inlined from lambdaisland.classpath
