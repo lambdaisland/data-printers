@@ -1,10 +1,9 @@
 # Unreleased
 
-## Added
-
-## Fixed
-
 ## Changed
+
+- Drop the dependency of `cider-puget` on `lambdaisland.classpath`, rely on the
+  lower-level and lighter-weight `clojure.java.classpath` instead.
 
 # 0.6.36 (2021-11-12 / 6c49e0a)
 
