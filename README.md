@@ -258,6 +258,54 @@ symbol. It expects to get a valid form back which gets turned into a transit
 read handler, so make sure your data readers are defined as described above, as
 macros in disguise.
 
+### Puget
+
+Puget does not have a mechanism for globally registering new printers, it
+expects you to pass in any additional handlers at the call site. This is not
+always feasible or convenient, so we work around this by altering Puget's map of
+default handlers with an `alter-var-root`. This generally works but can be
+fragile, YMMV.
+
+`deep-diff` (v1, clj-only) sits on top of Puget, but introduces its own
+mechanism for registering global handlers, so
+`lambdaisland.data-printers.deep-diff/register-deep-diff` leverages that. But
+since this uses Puget under the hood, if you are already using
+`lambdaisland.data-printers.puget` then this isn't strictly necessary, deep-diff
+should pick up your Puget handlers.
+
+`deep-diff2` (cljc version) uses a forked version of Puget, which required API
+alterations to make it ClojureScript compatible, which is why we need to rely on
+a fork rather than getting these changes upstream. Since these are different
+namespaces from the original Puget deep-diff2 will not pick up your Puget
+handlers, so you still need `lambdaisland.data-printers.deep-diff2`.
+
+Finally you can instruct CIDER to use Puget for pretty printing (e.g. when
+invoking `cider-pprint-eval-last-sexp`), by setting `cider-print-fn` to `puget`.
+In this case CIDER uses its own version of Puget, inlined via MrAnderson. This
+means another copy of the Puget namespace, which will look something like
+`cider.nrepl.inlined-deps.puget.v1v3v1.puget.printer`. The
+`lambdaisland.data-printers.cider-puget` allows you to register handlers with
+this version of Puget, it will find this namespace by scanning the classpath,
+which is why you need to add `clojure.java.classpath` as a dependency for this
+to work.
+
+### BYO (Bring-Your-Own) Dependencies
+
+data-readers does not declare any dependencies explicitly, since it assumes that
+you already have project-level dependency declarations for any printers that you
+want to register handlers for, and so as not to impose extra dependencies on
+people that don't need it.
+
+Some of the dependencies you might want to include:
+
+- org.clojure/clojure
+- lambdaisland/deep-diff2
+- lambdaisland/deep-diff
+- com.cognitect/transit-clj
+- com.cognitect/transit-cljs
+- mvxcvi/puget
+- org.clojure/java.classpath
+
 <!-- contributing -->
 ## Contributing
 

@@ -2,16 +2,68 @@
   "Hook into the version of Puget that gets inlined with CIDER via MrAnderson. We
   need to scan the classpath to find the right namespaces, since they contain a
   changing version number, that's why this depends currently on
-  `lambdaisland.classpath`, which is currently BYO (bring-your-own): it is not
-  listed as an explicit dependency because it is (transitively) a large
-  dependency. Note that we may drop this dependency again, since we don't need
-  all of tools.deps here."
-  (:require [lambdaisland.classpath :as licp]
-            [clojure.string :as str]))
+  `clojure.java.classpath`, which is currently BYO (bring-your-own). See the
+  note in the README on BYO dependencies.
+
+  This namespace is safe to load and use even if CIDER is not available on the
+  classpath, in that case registering a handler will simply be a no-op."
+  (:require [clojure.string :as str]
+            #?(:clj [clojure.java.classpath :as cp]))
+  (:import (java.util.jar JarFile JarEntry)
+           (java.io File)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Inlined from lambdaisland.classpath
 
 #?(:clj
-   (defn find-classpath-var [file-regex var-name]
-     (some-> (licp/find-resources file-regex)
+   (defn- classpath
+     "clojure.java.classpath does not play well with the post-Java 9 application
+  class loader, which is no longer a URLClassLoader, even though ostensibly it
+  tries to cater for this, but in practice if any URLClassLoader or
+  DynamicClassLoader higher in the chain contains a non-empty list of URLs, then
+  this shadows the system classpath."
+     []
+     (distinct (concat (cp/classpath) (cp/system-classpath)))))
+
+#?(:clj
+   (defn- classpath-directories
+     "Returns a sequence of File objects for the directories on classpath."
+     []
+     (filter #(.isDirectory ^File %) (classpath))))
+
+#?(:clj
+   (defn- classpath-jarfiles
+     "Returns a sequence of JarFile objects for the JAR files on classpath."
+     []
+     (map #(JarFile. ^File %) (filter cp/jar-file? (classpath)))))
+
+#?(:clj
+   (defn- find-resources
+     "Scan 'the classpath' for resources that match the given regex."
+     [regex]
+     ;; FIXME currently jar entries always come first in the result, this should be
+     ;; in classpath order.
+     (concat
+      (sequence
+       (comp
+        (mapcat #(iterator-seq (.entries ^JarFile %)))
+        (map #(.getName ^JarEntry %))
+        (filter #(re-find regex %)))
+       (classpath-jarfiles))
+
+      (sequence
+       (comp
+        (mapcat file-seq)
+        (map str)
+        (filter #(re-find regex %)))
+       (classpath-directories)))))
+
+;; End inlining from lambdaisland.classpath
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#?(:clj
+   (defn- find-classpath-var [file-regex var-name]
+     (some-> (find-resources file-regex)
              first
              (str/replace #"/" ".")
              (str/replace #"_" "-")
