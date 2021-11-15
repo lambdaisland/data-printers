@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.7.40 (2021-11-15 / a73fc95)
 
 ## Changed
