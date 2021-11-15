@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.7.47 (2021-11-15 / 7f65723)
 
 ## Fixed
