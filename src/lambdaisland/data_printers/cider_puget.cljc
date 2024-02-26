@@ -71,8 +71,8 @@
              (symbol var-name)
              requiring-resolve)))
 
-#?(:clj (def printer-ns #"cider/nrepl/inlined_deps/puget/.*/puget/printer.clj"))
-#?(:clj (def dispatch-ns #"cider/nrepl/inlined_deps/puget/.*/puget/dispatch.clj"))
+#?(:clj (def printer-ns #"cider/nrepl/inlined/deps/puget/.*/puget/printer.clj"))
+#?(:clj (def dispatch-ns #"cider/nrepl/inlined/deps/puget/.*/puget/dispatch.clj"))
 #?(:clj (def common-handlers-var (find-classpath-var printer-ns "common-handlers")))
 #?(:clj (def tagged-handler @(find-classpath-var printer-ns "tagged-handler")))
 #?(:clj (def chained-lookup @(find-classpath-var dispatch-ns "chained-lookup")))
