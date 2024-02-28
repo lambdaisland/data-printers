@@ -87,4 +87,4 @@
        (alter-var-root
         common-handlers-var
         (constantly
-         (chained-lookup original-handlers (inheritance-lookup @handlers))))]))
+         (chained-lookup (inheritance-lookup @handlers) original-handlers)))]))
