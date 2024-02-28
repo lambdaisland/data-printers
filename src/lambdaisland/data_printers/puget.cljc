@@ -12,4 +12,4 @@
        (alter-var-root
         #'puget/common-handlers
         (constantly
-         (dispatch/chained-lookup original-handlers (dispatch/inheritance-lookup @handlers))))]))
+         (dispatch/chained-lookup (dispatch/inheritance-lookup @handlers) original-handlers)))]))
