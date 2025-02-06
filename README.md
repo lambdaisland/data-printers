@@ -46,13 +46,13 @@ One stop shop registration of print handlers
 deps.edn
 
 ```
-lambdaisland/data-printers {:mvn/version "0.7.47"}
+lambdaisland/data-printers {:mvn/version "0.8.55"}
 ```
 
 project.clj
 
 ```
-[lambdaisland/data-printers "0.7.47"]
+[lambdaisland/data-printers "0.8.55"]
 ```
 <!-- /installation -->
 
