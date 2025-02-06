@@ -2,9 +2,7 @@
 
 ## Added
 
-## Fixed
-
-## Changed
+- Add `lambdaisland.data-printer.auto` namespace, which will auto-detect which libraries it is able to extend
 
 # 0.7.47 (2021-11-15 / 7f65723)
 
