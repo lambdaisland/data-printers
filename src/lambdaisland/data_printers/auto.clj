@@ -15,6 +15,7 @@
 (def register-deep-diff2 (resolve-var 'lambdaisland.data-printers.deep-diff2/register-deep-diff2))
 (def register-write-handler (resolve-var 'lambdaisland.data-printers.transit/register-write-handler))
 (def register-puget (resolve-var 'lambdaisland.data-printers.puget/register-puget))
+(def register-cider-puget (resolve-var 'lambdaisland.data-printers.cider-puget/register-cider-puget))
 
 (defn register-printer
   "Register print handlers for `clojure.core/print-method`,
@@ -27,4 +28,5 @@
   (when register-deep-diff (register-deep-diff type tag to-edn))
   (when register-deep-diff2 (register-deep-diff2 type tag to-edn))
   (when register-write-handler (register-write-handler type tag to-edn))
-  (when register-puget (register-puget type tag to-edn)))
+  (when register-puget (register-puget type tag to-edn))
+  (when register-cider-puget (register-cider-puget type tag to-edn)))

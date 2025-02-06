@@ -2,9 +2,7 @@
 
 ## Added
 
-## Fixed
-
-## Changed
+- Also handle cider-puget in `lambdaisland.data-printer.auto`
 
 # 0.8.55 (2025-02-06 / 6559dc3)
 
