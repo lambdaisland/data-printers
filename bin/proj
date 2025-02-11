@@ -3,10 +3,10 @@
 (ns proj (:require [lioss.main :as lioss]))
 
 (lioss/main
- {:license        :mpl
-  :inception-year 2021
-  :description    "Quickly define print handlers for tagged literals across print/pprint implementations."
-  :group-id       "lambdaisland"
+ {:license                  :mpl
+  :inception-year           2021
+  :description              "Quickly define print handlers for tagged literals across print/pprint implementations."
+  :group-id                 "lambdaisland"
   :aliases-as-optional-deps [:dev]})
 
 
